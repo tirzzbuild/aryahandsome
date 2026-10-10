@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARYA OFFICIAL | AM Preset Finder</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --blue: #2563eb;
+  --dark: #111827;
+  --gray: #6b7280;
+  --border: #e5e7eb;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  color: var(--dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* WATERMARK BACKGROUND */
+.background-name {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  transform: rotate(-18deg) scale(1.2);
+}
+
+.background-name span {
+  white-space: nowrap;
+  font-size: clamp(30px, 8vw, 75px);
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: rgba(37, 99, 235, 0.045);
+}
+
+/* HEADER */
+header {
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.94);
+  position: relative;
+  z-index: 2;
+}
+
+.nav {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: -.4px;
+}
+
+.logo {
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  background: var(--blue);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.owner {
+  font-size: 12px;
+  color: var(--blue);
+  font-weight: bold;
+}
+
+/* MAIN */
+main {
+  max-width: 760px;
+  margin: auto;
+  padding: 42px 17px 55px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  color: var(--gray);
+  font-size: 12px;
+  background: white;
+}
+
+h1 {
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  margin: 19px 0 12px;
+}
+
+h1 span {
+  color: var(--blue);
+}
+
+.subtitle {
+  color: var(--gray);
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 520px;
+  margin: auto;
+}
+
+/* SEARCH BOX */
+.panel {
+  background: rgba(255,255,255,.96);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 21px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.045);
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  margin-bottom: 22px;
+}
+
+.tab {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  background: transparent;
+  color: var(--gray);
+}
+
+.tab.active {
+  background: white;
+  color: var(--blue);
+  box-shadow: 0 1px 4px #0001;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 9px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px #2563eb15;
+}
+
+textarea {
+  min-height: 145px;
+  resize: vertical;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--gray);
+  margin: 8px 0 17px;
+}
+
+.search-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background: #1d4ed8;
+}
+
+.hidden {
+  display: none;
+}
+
+/* RESULTS */
+.results {
+  margin-top: 22px;
+}
+
+.result-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.result-card, .empty {
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+  background: white;
+}
+
+.result-card a {
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.result-card a:hover {
+  text-decoration: underline;
+}
+
+.result-card p {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 6px;
+}
+
+.empty {
+  color: var(--gray);
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.7;
+}
+
+.notice {
+  background: #f8fafc;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--gray);
+  font-size: 11px;
+  line-height: 1.7;
+  margin-top: 17px;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 22px 15px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--gray);
+  background: rgba(255,255,255,.92);
+}
+
+footer strong {
+  color: var(--blue);
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 32px 13px 42px;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .owner {
+    font-size: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- WATERMARK ARYA OFFICIAL -->
+<div class="background-name" aria-hidden="true">
+  <span>ARYA OFFICIAL</span>
+  <span>ARYA OFFICIAL</span>
+  <span>ARYA OFFICIAL</span>
+  <span>ARYA OFFICIAL</span>
+  <span>ARYA OFFICIAL</span>
+</div>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="logo">AO</div>
+      <div>ARYA OFFICIAL</div>
+    </div>
+    <div class="owner">AM PRESET FINDER</div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="badge">● Preset Search Tool</div>
+    <h1>AM Preset <span>Finder.</span></h1>
+    <p class="subtitle">
+      Temukan tautan preset Alight Motion melalui kata kunci
+      atau teks caption dan komentar yang kamu salin.
+    </p>
+  </section>
+
+  <section class="panel">
+    <div class="tabs">
+      <button class="tab active" id="tabKeyword" type="button">
+        Kata Kunci
+      </button>
+      <button class="tab" id="tabText" type="button">
+        Cari dari Teks
+      </button>
+    </div>
+
+    <form id="keywordForm">
+      <label for="keyword">Kata kunci preset</label>
+      <input id="keyword" type="search"
+        placeholder="Contoh: velocity, jedag jedug..."
+        maxlength="100">
+      <p class="hint">
+        Cari preset dari data lokal atau buka pencarian TikTok.
+      </p>
+      <button class="search-btn" type="submit">Search Preset</button>
+    </form>
+
+    <form id="textForm" class="hidden">
+      <label for="sourceText">Tempel caption atau komentar</label>
+      <textarea id="sourceText"
+        placeholder="Tempel teks yang berisi tautan preset di sini..."></textarea>
+      <p class="hint">
+        Teks diproses langsung di browser.
+      </p>
+      <button class="search-btn" type="submit">Temukan Tautan</button>
+    </form>
+
+    <div class="results" id="results" aria-live="polite">
+      <div class="empty">
+        Masukkan kata kunci atau tempel teks untuk memulai.
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>Informasi:</strong> HTML ini tidak membaca komentar TikTok
+      secara otomatis. Untuk mencari tautan dari komentar, salin teksnya
+      dan gunakan menu Cari dari Teks. Pencarian TikTok akan dibuka pada
+      tab baru.
+    </div>
+  </section>
+</main>
+
+<footer>
+  Made with care by <strong>ARYA OFFICIAL</strong><br>
+  AM Preset Finder · Fan-made project
+</footer>
+
+<script>
+/*
+  Tambahkan data preset yang valid ke array ini.
+  Contoh format:
+  {
+    title: "Preset Velocity",
+    tags: ["velocity", "smooth"],
+    url: "https://alight.link/TAUTAN-VALID"
+  }
+*/
+const PRESETS = [];
+
+const tabKeyword = document.getElementById("tabKeyword");
+const tabText = document.getElementById("tabText");
+const keywordForm = document.getElementById("keywordForm");
+const textForm = document.getElementById("textForm");
+const results = document.getElementById("results");
+
+function showMode(mode) {
+  const keywordMode = mode === "keyword";
+
+  keywordForm.classList.toggle("hidden", !keywordMode);
+  textForm.classList.toggle("hidden", keywordMode);
+
+  tabKeyword.classList.toggle("active", keywordMode);
+  tabText.classList.toggle("active", !keywordMode);
+
+  results.innerHTML =
+    '<div class="empty">Masukkan data untuk mulai mencari.</div>';
+}
+
+tabKeyword.addEventListener("click", () => showMode("keyword"));
+tabText.addEventListener("click", () => showMode("text"));
+
+function validUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
+    }
+  } catch (error) {}
+  return null;
+}
+
+function renderResults(items, message) {
+  results.innerHTML = "";
+
+  const heading = document.createElement("div");
+  heading.className = "result-title";
+  heading.textContent = "Hasil Pencarian";
+  results.appendChild(heading);
+
+  if (!items.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = message;
+    results.appendChild(empty);
+    return;
+  }
+
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "result-card";
+
+    const link = document.createElement("a");
+    link.href = item.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = item.title || item.url;
+
+    const description = document.createElement("p");
+    description.textContent = item.url;
+
+    card.append(link, description);
+    results.appendChild(card);
+  });
+}
+
+keywordForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const query = document.getElementById("keyword")
+    .value.trim().toLowerCase();
+
+  if (!query) {
+    renderResults([], "Masukkan kata kunci terlebih dahulu.");
+    return;
+  }
+
+  const matches = PRESETS.filter(item => {
+    const searchable = [
+      item.title || "",
+      ...(item.tags || [])
+    ].join(" ").toLowerCase();
+
+    return searchable.includes(query);
+  }).map(item => ({
+    title: item.title,
+    url: validUrl(item.url)
+  })).filter(item => item.url);
+
+  renderResults(
+    matches,
+    "Belum ada data preset lokal yang cocok. Kamu bisa mencoba pencarian TikTok di bawah."
+  );
+
+  const card = document.createElement("div");
+  card.className = "result-card";
+
+  const link = document.createElement("a");
+  link.href = "https://www.tiktok.com/search?q=" +
+    encodeURIComponent(query + " preset alight motion");
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "Cari di TikTok ↗";
+
+  const description = document.createElement("p");
+  description.textContent =
+    "Membuka hasil pencarian TikTok di tab baru.";
+
+  card.append(link, description);
+  results.appendChild(card);
+});
+
+textForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const text = document.getElementById("sourceText").value.trim();
+
+  if (!text) {
+    renderResults([], "Tempel teks terlebih dahulu.");
+    return;
+  }
+
+  const found = text.match(/https?:\/\/[^\s<>"'()[\]{}]+/gi) || [];
+  const unique = [...new Set(
+    found.map(url => url.replace(/[.,!?;:]+$/, ""))
+  )];
+
+  const links = unique.map(url => {
+    const safe = validUrl(url);
+    if (!safe) return null;
+
+    let hostname = safe;
+    try {
+      hostname = new URL(safe).hostname;
+    } catch (error) {}
+
+    return { title: hostname, url: safe };
+  }).filter(Boolean);
+
+  renderResults(
+    links,
+    "Tidak ditemukan tautan HTTP/HTTPS. Pastikan teks yang kamu salin berisi link lengkap."
+  );
+});
+</script>
+
+</body>
+</html>
